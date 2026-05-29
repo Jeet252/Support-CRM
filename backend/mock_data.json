@@ -1,0 +1,44 @@
+[
+  {
+    "customer_name": "Alice Vance",
+    "customer_email": "alice.vance@example.com",
+    "subject": "Billing issue: Charged twice for premium subscription",
+    "description": "Hi support team, I noticed that I was billed twice on my credit card for this month's premium subscription. The charges appeared on May 25th. Could you please check this and refund the duplicate charge?",
+    "status": "Open",
+    "notes": [
+      "Ticket created automatically upon customer submission."
+    ]
+  },
+  {
+    "customer_name": "David Miller",
+    "customer_email": "david.miller@example.com",
+    "subject": "Integration Error: API returning 500 status code",
+    "description": "We are getting a consistent 500 Internal Server Error when calling the `/api/v1/sync` endpoint from our staging server. The payload is exactly the same as the one used in production, where it works fine. Need technical assistance to debug.",
+    "status": "In Progress",
+    "notes": [
+      "Assigned to engineering team to check server logs for endpoint `/api/v1/sync`.",
+      "Staging server logs show a connection timeout to the database during sync."
+    ]
+  },
+  {
+    "customer_name": "Sarah Connor",
+    "customer_email": "sconnor@cyberdyne.com",
+    "subject": "Account Access: Reset link not received",
+    "description": "I have been trying to reset my password for the admin portal, but the reset password link email is not arriving in my inbox or spam folder. Please verify if my account is active.",
+    "status": "Closed",
+    "notes": [
+      "Verified customer's email spelling. Reset link resent successfully.",
+      "Customer confirmed receipt of the email and successfully logged in. Closing ticket."
+    ]
+  },
+  {
+    "customer_name": "Marcus Aurelius",
+    "customer_email": "marcus.aurelius@rome.org",
+    "subject": "Feature Request: Export customer history to CSV",
+    "description": "It would be extremely helpful if our team could export the customer support history directly to a CSV file from the dashboard. This would save us hours of manual reporting every week.",
+    "status": "Open",
+    "notes": [
+      "Logged feature request in product backlog for Q3 planning."
+    ]
+  }
+]
