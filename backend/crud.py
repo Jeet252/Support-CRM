@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 import datetime
-from . import models, schemas
+import models, schemas
 
 def get_next_ticket_id(db: Session) -> str:
     """

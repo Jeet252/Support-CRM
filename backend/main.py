@@ -5,8 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-from .database import engine, Base, get_db, SessionLocal
-from . import models, schemas, crud
+from database import engine, Base, get_db, SessionLocal
+import models, schemas, crud
 
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
@@ -16,6 +16,7 @@ app = FastAPI(
     description="Backend API for managing support tickets, customer data, and notes.",
     version="1.0.0"
 )
+
 
 # CORS Configuration - Enable React frontend connections
 app.add_middleware(
@@ -139,3 +140,4 @@ def update_ticket_endpoint(
         "success": True,
         "updated_at": db_ticket.updated_at
     }
+
