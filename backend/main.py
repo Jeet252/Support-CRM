@@ -1,12 +1,10 @@
-import os
-import json
 from fastapi import FastAPI, Depends, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
-from database import engine, Base, get_db, SessionLocal
-import models, schemas, crud
+from database import engine, Base, get_db
+import schemas, crud
 
 # Initialize database tables
 Base.metadata.create_all(bind=engine)
@@ -26,49 +24,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Database Auto-Seeding from mock_data.json
-@app.on_event("startup")
-def seed_database():
-    db = SessionLocal()
-    try:
-        # Only seed if no tickets exist in the database
-        if db.query(models.Ticket).count() == 0:
-            mock_data_path = os.path.join(os.path.dirname(__file__), "mock_data.json")
-            if os.path.exists(mock_data_path):
-                with open(mock_data_path, "r", encoding="utf-8") as f:
-                    tickets = json.load(f)
-                
-                for idx, t_data in enumerate(tickets, 1):
-                    t_id = f"TKT-{idx:03d}"
-                    # Create ticket record
-                    db_ticket = models.Ticket(
-                        ticket_id=t_id,
-                        customer_name=t_data["customer_name"],
-                        customer_email=t_data["customer_email"],
-                        subject=t_data["subject"],
-                        description=t_data["description"],
-                        status=t_data["status"]
-                    )
-                    db.add(db_ticket)
-                    db.commit()
-                    db.refresh(db_ticket)
-
-                    # Add associated notes
-                    for note_text in t_data.get("notes", []):
-                        db_note = models.TicketNote(
-                            ticket_id=t_id,
-                            note_text=note_text
-                        )
-                        db.add(db_note)
-                    db.commit()
-                print("Database auto-seeded successfully from mock_data.json!")
-            else:
-                print("Warning: mock_data.json not found. Database is empty.")
-    except Exception as e:
-        print(f"Error seeding database: {e}")
-    finally:
-        db.close()
 
 # Root Endpoint
 @app.get("/")

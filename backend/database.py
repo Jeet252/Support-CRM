@@ -20,6 +20,10 @@ Base = declarative_base()
 def get_db():
     db = SessionLocal()
     try:
+        print("Database connected successfully")
         yield db
+    except Exception as e:
+        print(f"Database connection error: {e}")
+        raise
     finally:
         db.close()

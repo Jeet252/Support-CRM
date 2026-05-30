@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const TicketContext = createContext();
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = 'http://localhost:8080/api';
 
 export function TicketProvider({ children }) {
   // Global Application States
@@ -10,7 +10,7 @@ export function TicketProvider({ children }) {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All'); // 'All' | 'Open' | 'In Progress' | 'Closed'
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   // Stats Metrics Counters
   const [stats, setStats] = useState({ total: 0, open: 0, inProgress: 0, closed: 0 });
 
@@ -41,14 +41,14 @@ export function TicketProvider({ children }) {
       setLoading(true);
       let url = `${API_BASE}/tickets`;
       const params = [];
-      
+
       if (statusFilter !== 'All') {
         params.push(`status=${encodeURIComponent(statusFilter)}`);
       }
       if (searchQuery.trim() !== '') {
         params.push(`search=${encodeURIComponent(searchQuery)}`);
       }
-      
+
       if (params.length > 0) {
         url += `?${params.join('&')}`;
       }
@@ -71,7 +71,7 @@ export function TicketProvider({ children }) {
       const res = await fetch(`${API_BASE}/tickets`);
       if (!res.ok) throw new Error('Failed to fetch stats');
       const allTickets = await res.json();
-      
+
       const counts = allTickets.reduce(
         (acc, t) => {
           acc.total += 1;
@@ -149,7 +149,7 @@ export function TicketProvider({ children }) {
 
       showNotification('success', `Ticket ${data.ticket_id} created successfully!`);
       setIsCreateOpen(false);
-      
+
       // Reload tickets and auto-select the new one
       await fetchTickets();
       setSelectedTicketId(data.ticket_id);
@@ -177,14 +177,14 @@ export function TicketProvider({ children }) {
       });
 
       if (!res.ok) throw new Error('Server failed to update ticket');
-      
+
       showNotification('success', 'Ticket updated successfully!');
-      
+
       // Refresh current details & full list
       const detailsRes = await fetch(`${API_BASE}/tickets/${ticketId}`);
       const detailsData = await detailsRes.json();
       setSelectedTicket(detailsData);
-      
+
       fetchTickets();
       return true;
     } catch (err) {
